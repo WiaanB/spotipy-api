@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  pythonapi:
+    image: pythonapi
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 8080:8080
