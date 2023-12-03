@@ -1,7 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
-import spotify_agent
+
+from users import router as user_router
+from playlists import router as playlist_router
 
 origins = [
     "http://localhost:8080",
@@ -27,13 +29,7 @@ def root():
     return {"message": "Hello World"}
 
 # User Routes
-@app.get("/me")
-def get_user():
-    sp = spotify_agent.create_spotify_instance("user-read-private")
-    results = sp.me()
-    return {**results}
-@app.get("/get/{username}/recently_played")
-def get_recently_played(username: str):
-    sp = spotify_agent.create_spotify_instance("user-read-recently-played")
-    results = sp.current_user_recently_played()
-    return {**results}
+app.include_router(user_router, prefix="/users")
+
+# Playlist Routes
+app.include_router(playlist_router, prefix="/playlists")
